@@ -1,9 +1,13 @@
+import dynamic from "next/dynamic";
 import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
+const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
+  ssr: false,
+});
 
 const Profile = () => {
   return (
-    <div className="w-full h-screen mb-60 bg-gray-100">
+    <div className="w-full h-screen pb-32 bg-gray-100">
       <div className="max-w-4xl mx-auto">
         <div className="relative bg-purple-700  h-36">
           <Link href="/explore">
@@ -33,11 +37,40 @@ const Profile = () => {
           <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">
             About you
           </h1>
+          <div className="border-2 mt-4">
+            <EditorComponent />
+          </div>
+          <div className="mt-4">
+            <p>
+              <span className="font-semibold text-gray-800">Optional: </span>a
+              small description.(You may be featured on the homepage!)
+            </p>
+            <textarea
+              className="w-full mt-4 border border-gray-200 text-gray-900 px-2 py-2 no-outline"
+              placeholder="what do you do, and what you're interested in. Max 140 chars."
+              name="desc"
+              id="desc"
+              rows="2"
+              maxLength="140"
+            ></textarea>
+          </div>
         </section>
         <section className="ml-2 mt-7">
           <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">
-            Address
+            Location
           </h1>
+          <div className="mt-4 ">
+            <input
+              className="p-2 border border-gray-200"
+              placeholder="Delhi"
+              type="text"
+            />
+            <input
+              className="p-2 ml-2 border border-gray-200"
+              placeholder="India"
+              type="text"
+            />
+          </div>
         </section>
         <section className="ml-2 mt-7">
           <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">

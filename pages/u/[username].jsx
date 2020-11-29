@@ -6,7 +6,7 @@ const UserPage = () => {
   const router = useRouter();
   const { username } = router.query;
   return (
-    <div className="w-full h-screen mb-60 bg-white">
+    <div className="w-full h-screen pb-32 bg-white">
       <div className="max-w-4xl mx-auto">
         <div className="relative bg-purple-700 h-36">
           <img
