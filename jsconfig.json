@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/assets/*": ["src/assets/*"],
-      "@/components/*": ["src/components/*"],
-      "@/modules/*": ["src/modules/*"],
-      "@/lib/*": ["src/lib/*"],
-      "@/middlewares/*": ["src/middlewares/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/db/*": ["src/db/*"]
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@modules/*": ["src/modules/*"],
+      "@lib/*": ["src/lib/*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@db/*": ["src/db/*"]
     }
   },
-  "exclude": ["node_modules"]
+  "include": ["src"],
+  "exclude": ["./node_modules", "**/node_modules/*"]
 }

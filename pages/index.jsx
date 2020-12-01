@@ -1,5 +1,5 @@
-import CityButton from "@/components/CityButton";
-import ProfilePreview from "@/components/ProfilePreview";
+import CityButton from "@components/CityButton";
+import ProfilePreview from "@components/ProfilePreview";
 import { FiTwitter } from "react-icons/fi";
 
 export default function IndexPage() {

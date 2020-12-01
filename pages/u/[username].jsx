@@ -1,4 +1,4 @@
-import BookContainer from "@/components/BookBox";
+import BookContainer from "@components/BookBox";
 import { useRouter } from "next/router";
 import { FiTwitter } from "react-icons/fi";
 

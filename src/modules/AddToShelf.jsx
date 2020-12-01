@@ -1,7 +1,7 @@
-import NewBookBox from "@/components/NewBookBox";
+import NewBookBox from "@components/NewBookBox";
 import { RiQrScan2Line } from "react-icons/ri";
 
-const { default: BookBox } = require("@/components/BookBox");
+const { default: BookBox } = require("@components/BookBox");
 
 const AddToShelf = () => {
   return (

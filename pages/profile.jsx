@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
-import AddToShelf from "@/modules/AddToShelf";
-const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
+import AddToShelf from "@modules/AddToShelf";
+const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
   ssr: false,
 });
 

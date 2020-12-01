@@ -1,6 +1,6 @@
 import Link from "next/link";
-import CityButton from "@/components/CityButton";
-import ProfilePreview from "@/components/ProfilePreview";
+import CityButton from "@components/CityButton";
+import ProfilePreview from "@components/ProfilePreview";
 import { RiProfileLine } from "react-icons/ri";
 
 const Exolore = () => {
