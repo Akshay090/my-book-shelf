@@ -1,11 +1,11 @@
-import CityButton from "@/components/cityButton";
-import ProfilePreview from "@/components/profilePreview";
+import CityButton from "@/components/CityButton";
+import ProfilePreview from "@/components/ProfilePreview";
 import { FiTwitter } from "react-icons/fi";
 
 export default function IndexPage() {
   return (
-    <div className="w-full h-screen pb-32 bg-gray-100">
-      <div className="max-w-4xl mx-auto">
+    <div className="w-full h-screen bg-gray-100">
+      <div className="max-w-4xl pb-32 mx-auto">
         <div className="relative bg-purple-700 h-36">
           <img
             className="w-1/5 sm:max-w-16 md:max-w-36 border-2 absolute -bottom-1/4 right-6 border-gray-100 rounded-xl"
@@ -27,7 +27,7 @@ export default function IndexPage() {
           </p>
           <div className="mt-4">
             <button
-              class="transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded outline-none focus:outline-none flex items-center"
+              className="transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded outline-none focus:outline-none flex items-center"
               type="button"
               style={{ backgroundColor: "#1DA1F2" }}
             >

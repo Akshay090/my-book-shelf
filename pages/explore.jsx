@@ -1,12 +1,12 @@
 import Link from "next/link";
-import CityButton from "@/components/cityButton";
-import ProfilePreview from "@/components/profilePreview";
+import CityButton from "@/components/CityButton";
+import ProfilePreview from "@/components/ProfilePreview";
 import { RiProfileLine } from "react-icons/ri";
 
 const Exolore = () => {
   return (
-    <div className="w-full h-screen pb-32 bg-white">
-      <div className="max-w-4xl mx-auto">
+    <div className="w-full h-screen">
+      <div className="max-w-4xl pb-32 mx-auto bg-gray-100">
         <div className="relative bg-purple-700 h-36">
           <Link href="/profile">
             <button className="absolute outline-none focus:outline-none bottom-2 left-2 px-2 py-2 rounded-md flex items-center font-medium text-xs text-white tracking-wider bg-purple-500 border-2 border-purple-400">

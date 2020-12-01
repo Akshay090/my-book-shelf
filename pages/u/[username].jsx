@@ -1,4 +1,4 @@
-import BookContainer from "@/components/bookContainer";
+import BookContainer from "@/components/BookBox";
 import { useRouter } from "next/router";
 import { FiTwitter } from "react-icons/fi";
 
@@ -6,8 +6,8 @@ const UserPage = () => {
   const router = useRouter();
   const { username } = router.query;
   return (
-    <div className="w-full h-screen pb-32 bg-white">
-      <div className="max-w-4xl mx-auto">
+    <div className="w-full h-screen bg-white">
+      <div className="max-w-4xl pb-32 mx-auto">
         <div className="relative bg-purple-700 h-36">
           <img
             className="w-1/5 sm:max-w-16 md:max-w-36 border-2 absolute -bottom-1/4 right-6 border-gray-100 rounded-xl"
@@ -33,7 +33,7 @@ const UserPage = () => {
           </p>
 
           <button
-            class="mt-2 transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded-lg outline-none focus:outline-none flex items-center"
+            className="mt-5 transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded-lg outline-none focus:outline-none flex items-center"
             type="button"
             style={{ backgroundColor: "#1DA1F2" }}
           >

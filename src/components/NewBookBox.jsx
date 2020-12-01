@@ -1,4 +1,4 @@
-const BookContainer = () => {
+const NewBookBox = () => {
   return (
     <div className="p-3 mb-1 border-4 border-green-400 rounded-sm">
       <h1 className="font-semibold text-4xl text-gray-900">
@@ -19,4 +19,4 @@ const BookContainer = () => {
   );
 };
 
-export default BookContainer;
+export default NewBookBox;
