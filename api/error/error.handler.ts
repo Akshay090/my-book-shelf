@@ -11,7 +11,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("ApiError\n%o", err);
+  console.error("ApiError\n%o", err);
   if (err.httpStatus) {
     return res.status(err.httpStatus).json({
       success: false,
