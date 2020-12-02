@@ -7,6 +7,8 @@ import { join } from "path";
 import { errorHandler, ApiError } from "./error/error.handler";
 import { errors } from "./error/error.constants";
 
+import { DatabaseService } from "./services/database.service";
+
 import authRoutes from "./auth/auth.routes";
 
 dotenvConfig();
@@ -60,7 +62,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
-Promise.all([])
+Promise.all([DatabaseService.getInstance().initalize()])
   .then(() => {
     app.listen(process.env.PORT!, () => {
       console.log(`Listening for Requests on Port ${process.env.PORT}`);
