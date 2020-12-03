@@ -2,6 +2,9 @@ import dynamic from "next/dynamic";
 import { GoGlobe } from "react-icons/go";
 import Link from "next/link";
 import AddToShelf from "@modules/AddToShelf";
+import BookBox from "@components/BookBox";
+import NewBookBox from "@components/NewBookBox";
+
 const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
   ssr: false,
 });
@@ -74,6 +77,10 @@ const Profile = () => {
           </div>
         </section>
         <AddToShelf />
+        <div className="mt-4">
+          <NewBookBox />
+          <BookBox />
+        </div>
       </div>
     </div>
   );
