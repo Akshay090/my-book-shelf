@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState, useRef } from "react";
+import jsQR from "jsqr";
 import Webcam from "react-webcam";
 import { RiCameraLine } from "react-icons/ri";
 
@@ -8,6 +9,8 @@ const videoConstraints = {
 
 const Camera = () => {
   const [url, setUrl] = useState(null);
+  const [imageData, setImageData] = useState(null);
+  const [qrData, setQrData] = useState(null);
   const webcamRef = useRef(null);
   const screenshotRef = useRef(null);
 
@@ -20,7 +23,26 @@ const Camera = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setUrl(imageSrc);
     scrollToRef(screenshotRef);
+    setImageData(getImageData(webcamRef.current.canvas));
   }, [webcamRef]);
+
+  const getImageData = (canvas) => {
+    const ctx = canvas.getContext("2d");
+    return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  };
+
+  useEffect(() => {
+    if (imageData) {
+      const response = jsQR(
+        imageData,
+        webcamRef.current.canvas.width,
+        webcamRef.current.canvas.height
+      );
+
+      if (response) setQrData(response.data);
+      else setQrData(null);
+    }
+  }, [imageData]);
 
   return (
     <div className="w-full bg-gray-100 min-h-screen">
@@ -69,7 +91,7 @@ const Camera = () => {
         {url && (
           <div className="w-full bg-purple-700 h-44 mt-16 flex justify-center items-center rounded-lg">
             <h1 className="text-white text-2xl font-bold">
-              Results in Tabular Form
+              {qrData ? qrData : "No QR code found, scanning your bookshelf"}
             </h1>
           </div>
         )}
