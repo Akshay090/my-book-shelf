@@ -16,6 +16,10 @@ body {
   @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
 }
 
+.btn-control {
+  @apply bg-blue-200 w-max border-none outline-none rounded-full p-3 sm:p-4 shadow-sm hover:shadow-md text-xl;
+}
+
 .no-outline {
   @apply outline-none focus:outline-none;
 }

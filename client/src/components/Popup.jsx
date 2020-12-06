@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import { MdClose } from "react-icons/md";
+import { ToastContainer } from "react-toastify";
+
+// import { useOnClickOutside } from "@hooks/useOnClickOutside";
 
 const modalVariant = {
   hidden: {
@@ -23,7 +25,7 @@ const backdropVariant = {
 const Popup = ({ children, showModal, toggleModal }) => {
   const popupRef = useRef();
 
-  useOnClickOutside(popupRef, () => toggleModal());
+  // useOnClickOutside(popupRef, () => toggleModal());
 
   return (
     <AnimatePresence exitBeforeEnter>
@@ -36,14 +38,25 @@ const Popup = ({ children, showModal, toggleModal }) => {
           initial="hidden"
           exit="hidden"
         >
-          <motion.div className="h-full" variants={modalVariant}>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          <motion.div variants={modalVariant}>
             <div
               ref={popupRef}
               className="flex flex-col p-4 bg-white lg:w-3/4 md:w-4/5 sm:w-5/6 m-auto rounded-lg shadow-lg"
               style={{ minHeight: "8rem" }}
             >
               <button
-                className="inline-block max-w-max self-end round rounded-full outline-none border-none bg-red-50 p-2 shadow-sm hover:shadow-md text-red-200 hover:text-red-500"
+                className="inline-block max-w-max self-end round rounded-full outline-none border-none bg-rose-50 p-2 shadow-sm hover:shadow-md text-red-300 hover:text-red-500"
                 onClick={() => toggleModal()}
               >
                 <MdClose style={{ fontSize: "1.2rem" }} />
