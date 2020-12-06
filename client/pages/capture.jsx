@@ -57,7 +57,7 @@ const Camera = () => {
         <div className="mx-auto mt-8">
           <Webcam
             ref={webcamRef}
-            audio={true}
+            audio={false}
             className="mx-auto w-3/4"
             videoConstraints={videoConstraints}
             screenshotFormat="image/jpeg"
