@@ -4,7 +4,7 @@ import { FiTwitter } from "react-icons/fi";
 
 export default function IndexPage() {
   return (
-    <div className="w-full h-screen bg-gray-100">
+    <div className="w-full bg-gray-100">
       <div className="max-w-4xl pb-32 mx-auto">
         <div className="relative bg-purple-700 h-36">
           <img

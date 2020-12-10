@@ -1,9 +1,6 @@
-import NewBookBox from "@components/NewBookBox";
-import { RiQrScan2Line } from "react-icons/ri";
+import { RiCameraLine } from "react-icons/ri";
 
-const { default: BookBox } = require("@components/BookBox");
-
-const AddToShelf = () => {
+const AddToShelf = ({ toggleModal }) => {
   return (
     <section className="mx-2 mt-7 max-w-3xl">
       <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">
@@ -15,19 +12,18 @@ const AddToShelf = () => {
           placeholder="Search book by title or ISBN"
           type="search"
         />
-        <button className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1 ">
+        <button
+          className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1"
+          onClick={() => toggleModal()}
+        >
           <div className="flex items-center">
-            <RiQrScan2Line className="" size="22" />
-            <span className="ml-2">Scan to add</span>
+            <RiCameraLine size="22" />
+            <span className="ml-2">Capture Bookshelf</span>
           </div>
         </button>
       </div>
       <div className="mt-4 px-6 py-4 text-2xl flex items-center justify-center border-4 border-purple-300 font-semibold text-gray-60">
         Search above or scan to add.
-      </div>
-      <div className="mt-4">
-        <NewBookBox />
-        <BookBox />
       </div>
     </section>
   );
