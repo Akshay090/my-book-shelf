@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 const StyledLink = ({ href, children, className }) => (
   <Link href={href} passHref>

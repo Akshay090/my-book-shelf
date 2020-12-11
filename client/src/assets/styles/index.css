@@ -8,16 +8,16 @@
 
 html,
 body {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50;
 }
 
 /* Write your own custom component styles here */
 .btn-blue {
-  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+  @apply px-4 ;
 }
 
 .no-outline {
-  @apply outline-none focus:outline-none;
+  @apply outline-none ;
 }
 
 /* Start purging... */
