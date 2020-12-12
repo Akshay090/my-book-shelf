@@ -1,4 +1,4 @@
-import NewBookBox from '@components/NewBookBox';
+// import NewBookBox from '@components/NewBookBox';
 import { useEffect, useState } from 'react';
 import { RiQrScan2Line } from 'react-icons/ri';
 import axios from 'axios';
@@ -20,26 +20,12 @@ const AddToShelf = () => {
 
   const closeDrawer = () => {
     setDrawer(false);
-    // setLoader(true);
   };
 
   const handleResponse = response => {
-    if (Array.isArray(response)) { setTitles(response); }
-  };
-
-  AddToShelf.getInitialProps = async () => {
-    // const resp = await fetch(SOME_URL);
-    const listOfBooks = [];
-
-    titles && titles.map(async item => {
-      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle:"${item}"`);
-      const books = response.data.items;
-      const found = books && books.find(book => book.volumeInfo.title.toLowerCase() === item.toLowerCase());
-      if (found) {
-        listOfBooks.push(found);
-      }
-    });
-    setUsersBooks(listOfBooks);
+    if (Array.isArray(response)) {
+      setTitles(response);
+    }
   };
 
   const getBookDetails = async () => {
@@ -56,32 +42,22 @@ const AddToShelf = () => {
         }
       });
 
+      listOfBooks.map(item => {
+        console.log('listOfBooks item--', item.volumeInfo.title);
+      });
+
       if (listOfBooks) {
-        console.log('herer---');
         setUsersBooks(listOfBooks);
       }
       console.log('listOfBooks--', listOfBooks);
-      console.log('usersBooks--', usersBooks);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // useEffect(() => {
-  //   getBookDetails();
-  // }, [titles]);
-
-  const getBooks = () => {
-    usersBooks && usersBooks.map(book => {
-      debugger;
-      return (
-        <BookBox
-          title={book.volumeInfo.title}
-          author={book.volumeInfo.authors[0]}
-        />
-      );
-    });
-  };
+  useEffect(() => {
+    getBookDetails();
+  }, [titles]);
 
   return (
     <section className="mx-2 mt-7 max-w-3xl">
@@ -108,15 +84,12 @@ const AddToShelf = () => {
 
       <div className="mt-4">
         {/* <NewBookBox /> */}
-        {usersBooks && usersBooks.map(book => {
-          debugger;
-          return (
-            <BookBox
-              title={book.volumeInfo.title}
-              author={book.volumeInfo.authors[0]}
-            />
-          );
-        })}
+        {usersBooks ? usersBooks.map(book => (
+          <BookBox
+            title={book.volumeInfo.title}
+            author={book.volumeInfo.authors[0]}
+          />
+        )) : null}
       </div>
 
       {openDrawer ? (

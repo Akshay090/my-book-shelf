@@ -6,11 +6,8 @@
 const { ComputerVisionClient } = require('@azure/cognitiveservices-computervision');
 const { ApiKeyCredentials } = require('@azure/ms-rest-js');
 
-const key = '512fa291b3b046f3a84585d5fcc0ef19';
-const endpoint = 'https://shelf-ocr.cognitiveservices.azure.com/';
-
 const computerVisionClient = new ComputerVisionClient(
-  new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } }), endpoint
+  new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_OCR_KEY } }), process.env.NEXT_PUBLIC_OCR_ENDPOINT
 );
 
 const computerVision = async (imageUrl, capturedPhoto) => {

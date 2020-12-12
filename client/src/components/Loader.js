@@ -9,7 +9,7 @@ const Spinner = () => (
       color="black"
       height={100}
       width={100}
-      timeout={3000} // 3 secs
+      // timeout={6000} // 3 secs
       style={{ zIndex: 100 }}
 
     />
