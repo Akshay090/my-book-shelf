@@ -1,8 +1,27 @@
 import CityButton from "@components/CityButton";
 import ProfilePreview from "@components/ProfilePreview";
+import Link from "next/link";
 import { FiTwitter } from "react-icons/fi";
+import getApiUrl from "@utils/getApiUrl";
+import { useEffect } from "react";
+import TokenService from "@services/Token.service";
+import { useRouter } from "next/router";
+import QueryString from "query-string";
 
 export default function IndexPage() {
+  const router = useRouter();
+  const tokenService = new TokenService();
+
+  useEffect(() => {
+    const { logout } = QueryString.parse(location.search);
+    console.log("logout", logout);
+    if (logout) {
+      tokenService.deleteData();
+      const baseURL = location.href.split("?")[0];
+      router.push(baseURL, undefined, { shallow: true });
+    }
+  }, []);
+
   return (
     <div className="w-full bg-gray-100">
       <div className="max-w-4xl pb-32 mx-auto">
@@ -26,16 +45,18 @@ export default function IndexPage() {
             You would be able to contact them throught their twitter profile.
           </p>
           <div className="mt-4">
-            <button
-              className="transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded outline-none focus:outline-none flex items-center"
-              type="button"
-              style={{ backgroundColor: "#1DA1F2" }}
-            >
-              <div className="">
-                <FiTwitter className="" size="32" />
-              </div>
-              <span className="ml-2 ">Get in with Twitter</span>
-            </button>
+            <Link href={`${getApiUrl()}/auth/generate`}>
+              <button
+                className="transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded outline-none focus:outline-none flex items-center"
+                type="button"
+                style={{ backgroundColor: "#1DA1F2" }}
+              >
+                <div className="">
+                  <FiTwitter className="" size="32" />
+                </div>
+                <span className="ml-2 ">Get in with Twitter</span>
+              </button>
+            </Link>
           </div>
         </section>
         <section className="ml-2 pt-4">
