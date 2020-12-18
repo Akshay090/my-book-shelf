@@ -5,10 +5,12 @@ import axios from 'axios';
 import ScanImage from '../components/scanImage';
 import Spinner from '../components/Loader';
 import BookBox from '../components/BookBox';
+import { RiCameraLine } from "react-icons/ri";
+
 
 // const { default: BookBox } = require('@components/BookBox');
 
-const AddToShelf = () => {
+const AddToShelf = ({toggleModal}) => {
   const [openDrawer, setDrawer] = useState(false);
   const [titlesArray, setTitles] = useState([]);
   const [showLoader, setLoader] = useState(false);
@@ -75,10 +77,13 @@ const AddToShelf = () => {
           placeholder="Search book by title or ISBN"
           type="search"
         />
-        <button className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1 ">
-          <div className="flex items-center" onClick={handleScan}>
-            <RiQrScan2Line className="" size="22" />
-            <span className="ml-2">Scan to add</span>
+        <button
+          className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1"
+            onClick={() => handleScan()}
+        >
+          <div className="flex items-center">
+            <RiCameraLine size="22" />
+            <span className="ml-2">Capture Bookshelf</span>
           </div>
         </button>
       </div>

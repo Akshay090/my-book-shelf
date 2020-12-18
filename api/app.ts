@@ -10,6 +10,7 @@ import { errors } from "./error/error.constants";
 import { DatabaseService } from "./services/database.service";
 
 import authRoutes from "./auth/auth.routes";
+import userRoutes from "./user/user.route";
 
 dotenvConfig();
 const app: Express = express();
@@ -41,6 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1", authRoutes);
+app.use("/api/v1", userRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(join(__dirname, "..", "..", "out")));
