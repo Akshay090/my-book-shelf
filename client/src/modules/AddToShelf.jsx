@@ -10,9 +10,10 @@ import BookBox from '../components/BookBox';
 
 const AddToShelf = () => {
   const [openDrawer, setDrawer] = useState(false);
-  const [titles, setTitles] = useState([]);
+  const [titlesArray, setTitles] = useState([]);
   const [showLoader, setLoader] = useState(false);
   const [usersBooks, setUsersBooks] = useState([]);
+  const [listOfBooks, setListOfBooks] = useState([]);
 
   const handleScan = () => {
     setDrawer(true);
@@ -22,42 +23,45 @@ const AddToShelf = () => {
     setDrawer(false);
   };
 
-  const handleResponse = response => {
-    if (Array.isArray(response)) {
-      setTitles(response);
-    }
-  };
-
-  const getBookDetails = async () => {
-    // google api
-    const listOfBooks = [];
+  const getBookDetails = titles => {
     try {
-      titles && titles.map(async item => {
-        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle:"${item}"`);
-        const books = response.data.items;
-        // Search for the books from api response
-        const found = books && books.find(book => book.volumeInfo.title.toLowerCase() === item.toLowerCase());
-        if (found) {
-          listOfBooks.push(found);
-        }
+      const promises = titles.map(item => (axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle:"${item}"`)));
+      Promise.all(promises).then(data => {
+        setUsersBooks(data);
       });
-
-      listOfBooks.map(item => {
-        console.log('listOfBooks item--', item.volumeInfo.title);
-      });
-
-      if (listOfBooks) {
-        setUsersBooks(listOfBooks);
-      }
-      console.log('listOfBooks--', listOfBooks);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const getBookList = titles => {
+    const detectedBooks = [];
+
+    for (let i = 0; i < usersBooks.length; i++) {
+      for (let j = 0; j < titles.length; j++) {
+        for (let k = 0; k < 10; k++) {
+          if (usersBooks[i].data.items[k].volumeInfo.title.toLowerCase() == titles[j].toLowerCase()) {
+            detectedBooks.push(usersBooks[i].data.items[k]);
+          }
+        }
+      }
+    }
+
+    return detectedBooks;
+  };
+
+  const handleResponse = response => {
+    if (Array.isArray(response)) {
+      setTitles(response);
+      getBookDetails(response);
+    }
+  };
+
   useEffect(() => {
-    getBookDetails();
-  }, [titles]);
+    const uniqueItems = [...new Set(getBookList(titlesArray))];
+    setListOfBooks(uniqueItems);
+    // console.log('uniqueItems--', uniqueItems);
+  }, [usersBooks]);
 
   return (
     <section className="mx-2 mt-7 max-w-3xl">
@@ -83,11 +87,12 @@ const AddToShelf = () => {
       </div>
 
       <div className="mt-4">
-        {/* <NewBookBox /> */}
-        {usersBooks ? usersBooks.map(book => (
+        {listOfBooks ? listOfBooks.map(book => (
           <BookBox
             title={book.volumeInfo.title}
             author={book.volumeInfo.authors[0]}
+            image={book.volumeInfo.imageLinks.smallThumbnail}
+
           />
         )) : null}
       </div>

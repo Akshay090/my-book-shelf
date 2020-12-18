@@ -40,7 +40,6 @@ const App = props => {
     // const imgURL = URL.createObjectURL(blobFile);
     setLoader(true);
     const result = await computerVision('', blobFile);
-    console.log('result--', result);
     props.response(result);
     setBookTitles(result);
     setLoader(false);
