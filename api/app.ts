@@ -10,7 +10,7 @@ import { errors } from "./error/error.constants";
 import { DatabaseService } from "./services/database.service";
 
 import authRoutes from "./auth/auth.routes";
-import userRoutes from "./user/user.route";
+import userRoutes from "./user/user.routes";
 
 dotenvConfig();
 const app: Express = express();
