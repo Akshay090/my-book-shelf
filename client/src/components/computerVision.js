@@ -22,7 +22,7 @@ const computerVision = async (imageUrl, capturedPhoto) => {
       const cords = item.boundingBox;
       for (let i = 0; i < 8; i += 2) {
         sum += cords[i] * cords[(i + 3) % 8]
-          - cords[i + 1] * cords[(i + 2) % 8];
+                    - cords[i + 1] * cords[(i + 2) % 8];
       }
 
       const area = Math.abs(sum) * 0.5;

@@ -2,35 +2,22 @@
 import { useEffect, useState } from 'react';
 import { RiQrScan2Line } from 'react-icons/ri';
 import axios from 'axios';
-import ScanImage from '../components/scanImage';
 import Spinner from '../components/Loader';
 import BookBox from '../components/BookBox';
-import { RiCameraLine } from "react-icons/ri";
 
-
-// const { default: BookBox } = require('@components/BookBox');
-
-const AddToShelf = ({toggleModal}) => {
-  const [openDrawer, setDrawer] = useState(false);
-  const [titlesArray, setTitles] = useState([]);
+const AddToShelf = ({ toggleModal, titlesData }) => {
   const [showLoader, setLoader] = useState(false);
   const [usersBooks, setUsersBooks] = useState([]);
   const [listOfBooks, setListOfBooks] = useState([]);
 
-  const handleScan = () => {
-    setDrawer(true);
-  };
-
-  const closeDrawer = () => {
-    setDrawer(false);
-  };
-
   const getBookDetails = titles => {
     try {
+      setLoader(true);
       const promises = titles.map(item => (axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle:"${item}"`)));
       Promise.all(promises).then(data => {
         setUsersBooks(data);
       });
+      setLoader(false);
     } catch (error) {
       console.error(error);
     }
@@ -48,21 +35,17 @@ const AddToShelf = ({toggleModal}) => {
         }
       }
     }
-
     return detectedBooks;
   };
 
-  const handleResponse = response => {
-    if (Array.isArray(response)) {
-      setTitles(response);
-      getBookDetails(response);
-    }
-  };
+  useEffect(() => {
+    getBookDetails(titlesData);
+  }, [titlesData]);
 
   useEffect(() => {
-    const uniqueItems = [...new Set(getBookList(titlesArray))];
+    const uniqueItems = [...new Set(getBookList(titlesData))];
     setListOfBooks(uniqueItems);
-    // console.log('uniqueItems--', uniqueItems);
+    console.log('uniqueItems--', uniqueItems);
   }, [usersBooks]);
 
   return (
@@ -78,11 +61,12 @@ const AddToShelf = ({toggleModal}) => {
           type="search"
         />
         <button
-          className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1"
-            onClick={() => handleScan()}
+          className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md
+        hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1 "
+          onClick={() => toggleModal()}
         >
           <div className="flex items-center">
-            <RiCameraLine size="22" />
+            <RiQrScan2Line className="" size="22" />
             <span className="ml-2">Capture Bookshelf</span>
           </div>
         </button>
@@ -101,31 +85,8 @@ const AddToShelf = ({toggleModal}) => {
           />
         )) : null}
       </div>
-
-      {openDrawer ? (
-        <div style={{
-          position: 'fixed',
-          width: '80%',
-          height: '50%',
-          backgroundColor: '#01c5c4',
-          zIndex: 300,
-          top: '20vh',
-          borderRadius: '15px',
-          boxShadow: '0 0 10px #000000',
-          left: '50%',
-          transform: 'translate(-50%, 0)'
-        }}
-        >
-          <div onClick={() => setDrawer(false)} style={{ width: '30px', margin: '10px' }}>
-            <img src="./cross.png" alt="camera" />
-          </div>
-
-          <ScanImage response={handleResponse} drawerVisibility={closeDrawer} />
-        </div>
-      ) : null}
     </section>
   );
 };
 
-// visibility: openCamera ? 'hidden' : 'visible',
 export default AddToShelf;
