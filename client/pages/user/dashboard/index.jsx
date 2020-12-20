@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { GoGlobe } from "react-icons/go";
-import Link from "next/link";
+import { convertToRaw } from "draft-js";
 import AddToShelf from "@modules/AddToShelf";
 import CameraModal from "@modules/CameraModal";
 import BookBox from "@components/BookBox";
@@ -14,15 +14,23 @@ import { useRouter } from "next/router";
 import TokenService from "@services/Token.service";
 import QueryString from "query-string";
 import { IoIosLogOut } from "react-icons/io";
+import { GiHypersonicBolt } from "react-icons/gi";
+import FetchService from "@services/Fetch.service";
+import cx from "classnames";
 
 const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
   ssr: false,
 });
 
 const initialAboutDetails = {
-  profileDesc: "",
+  description: "",
   city: "",
   country: "",
+};
+
+const initInputErr = {
+  city: null,
+  country: null,
 };
 
 const Profile = ({}) => {
@@ -30,6 +38,7 @@ const Profile = ({}) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const tokenService = new TokenService();
   const [aboutDetails, setAboutDetails] = useState(initialAboutDetails);
+  const [inputErr, setInputErr] = useState(initInputErr);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState();
 
@@ -56,6 +65,7 @@ const Profile = ({}) => {
   const toggleModal = () => setShowModal(!showModal);
 
   const handleChange = (e) => {
+    setInputErr(initInputErr);
     const target = e.target;
     const value = target.value;
     const name = target.name;
@@ -64,6 +74,41 @@ const Profile = ({}) => {
       ...aboutDetails,
       [name]: value,
     });
+  };
+
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
+  const checkValidInput = () => {
+    let err = {};
+    if (!aboutDetails.city) err.city = "City is required";
+    if (!aboutDetails.country) err.country = "Country is required";
+    setInputErr(err);
+    return isEmpty(err);
+  };
+
+  const handleSetProfile = async () => {
+    if (!checkValidInput()) {
+      return;
+    }
+    const rawEditorData = convertToRaw(editorState.getCurrentContent());
+    console.log(rawEditorData, "raw");
+    const profileData = JSON.stringify(rawEditorData);
+    const submitData = {
+      ...aboutDetails,
+      profile: profileData,
+    };
+
+    try {
+      const resp = await FetchService.postFormDataAuthed(
+        "/user/profile/set",
+        submitData
+      );
+      console.log(resp);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -116,8 +161,8 @@ const Profile = ({}) => {
                   <textarea
                     className="w-full mt-4 border-2 border-gray-300 bg-gray-50border-gray-200 text-gray-900 px-2 py-2 no-outline"
                     placeholder="what do you do, and what you're interested in. Max 140 chars."
-                    name="profileDesc"
-                    value={aboutDetails.profileDesc}
+                    name="description"
+                    value={aboutDetails.description}
                     onChange={handleChange}
                     id="desc"
                     rows="2"
@@ -125,13 +170,17 @@ const Profile = ({}) => {
                   ></textarea>
                 </div>
               </section>
-              <section className="mx-2 mt-7 max-w-3xl">
+              <section className="mx-2 mt-4 max-w-3xl">
                 <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">
                   Location
                 </h1>
                 <div className="mt-4 ">
                   <input
-                    className="mr-2 border-2 border-gray-300 bg-gray-50 p-2 text-gray-700 font-semibold"
+                    className={cx({
+                      "mr-2  bg-gray-50 p-2 text-gray-700 font-semibold": true,
+                      "border-4 border-rose-400": inputErr.city,
+                      "border-2 border-gray-300": !inputErr.city,
+                    })}
                     placeholder="City"
                     type="text"
                     name="city"
@@ -139,7 +188,11 @@ const Profile = ({}) => {
                     onChange={handleChange}
                   />
                   <input
-                    className="mt-2 md:mt-0 border-2 border-gray-300 bg-gray-50 p-2 text-gray-700 font-semibold"
+                    className={cx({
+                      "mr-2  bg-gray-50 p-2 text-gray-700 font-semibold": true,
+                      "border-4 border-rose-400": inputErr.country,
+                      "border-2 border-gray-300": !inputErr.country,
+                    })}
                     placeholder="Country"
                     type="text"
                     name="country"
@@ -147,6 +200,15 @@ const Profile = ({}) => {
                     onChange={handleChange}
                   />
                 </div>
+                <button
+                  onClick={handleSetProfile}
+                  className="mt-4 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1"
+                >
+                  <div className="flex items-center">
+                    <GiHypersonicBolt size="22" />
+                    <span className="ml-2">Save Profile</span>
+                  </div>
+                </button>
               </section>
               <AddToShelf toggleModal={toggleModal} />
               <div className="mt-4">

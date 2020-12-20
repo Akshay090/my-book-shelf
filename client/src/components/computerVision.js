@@ -3,8 +3,8 @@
 /* eslint-disable no-console */
 /* eslint-disable guard-for-in */
 
-const { ComputerVisionClient } = require('@azure/cognitiveservices-computervision');
-const { ApiKeyCredentials } = require('@azure/ms-rest-js');
+import { ComputerVisionClient } from '@azure/cognitiveservices-computervision';
+import { ApiKeyCredentials } from '@azure/ms-rest-js';
 
 const computerVisionClient = new ComputerVisionClient(
   new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_OCR_KEY } }), process.env.NEXT_PUBLIC_OCR_ENDPOINT

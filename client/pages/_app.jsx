@@ -1,4 +1,5 @@
 import '@assets/styles/index.css';
+import '@assets/styles/custom.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 function MyApp({ Component, pageProps }) {

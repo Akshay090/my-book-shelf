@@ -1,0 +1,17 @@
+html,
+body {
+  @apply bg-gray-50;
+}
+
+/* Write your own custom component styles here */
+.btn-blue {
+  @apply px-4 ;
+}
+
+.btn-control {
+  @apply bg-blue-200 w-max border-none outline-none rounded-full p-3 sm:p-4 shadow-sm hover:shadow-md text-xl;
+}
+
+.no-outline {
+  @apply outline-none ;
+}
