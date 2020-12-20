@@ -5,21 +5,19 @@ import axios from 'axios';
 import Spinner from '../components/Loader';
 import BookBox from '../components/BookBox';
 
-const AddToShelf = ({ toggleModal, titlesData  }) => {
+const AddToShelf = ({ toggleModal, titlesData }) => {
   const [showLoader, setLoader] = useState(false);
   const [usersBooks, setUsersBooks] = useState([]);
   const [listOfBooks, setListOfBooks] = useState([]);
 
-
   const getBookDetails = titles => {
     try {
-      setLoader(true)
+      setLoader(true);
       const promises = titles.map(item => (axios.get(`https://www.googleapis.com/books/v1/volumes?q=intitle:"${item}"`)));
       Promise.all(promises).then(data => {
         setUsersBooks(data);
       });
-      setLoader(false)
-
+      setLoader(false);
     } catch (error) {
       console.error(error);
     }
@@ -40,9 +38,9 @@ const AddToShelf = ({ toggleModal, titlesData  }) => {
     return detectedBooks;
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     getBookDetails(titlesData);
-  }, [titlesData])
+  }, [titlesData]);
 
   useEffect(() => {
     const uniqueItems = [...new Set(getBookList(titlesData))];
@@ -62,8 +60,11 @@ const AddToShelf = ({ toggleModal, titlesData  }) => {
           placeholder="Search book by title or ISBN"
           type="search"
         />
-        <button className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md 
-        hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1 "  onClick={()=>toggleModal()}>
+        <button
+          className="mt-2 md:mt-0 transition duration-200 ease-in bg-purple-500 text-purple-100 p-2 text-lg font-medium rounded-md
+        hover:shadow-md hover:bg-purple-600 transform hover:-translate-y-1 "
+          onClick={() => toggleModal()}
+        >
           <div className="flex items-center">
             <RiQrScan2Line className="" size="22" />
             <span className="ml-2">Capture Bookshelf</span>
@@ -84,7 +85,7 @@ const AddToShelf = ({ toggleModal, titlesData  }) => {
           />
         )) : null}
       </div>
-</section>
+    </section>
   );
 };
 
