@@ -27,8 +27,12 @@ export const errors = {
     httpStatus: 500,
     message: "Not Allowed by CORS.",
   },
-  DUMMY_ERROR: {
-    httpStatus: 403,
-    message: "Dummy error.",
+  MONGODB_QUERY_ERROR: {
+    httpStatus: 500,
+    message: "MongoDB Query Error",
+  },
+  USER_NOT_FOUND: {
+    httpStatus: 404,
+    message: "User Not Found.",
   },
 };
