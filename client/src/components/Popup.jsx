@@ -38,17 +38,6 @@ const Popup = ({ children, showModal, toggleModal }) => {
           initial="hidden"
           exit="hidden"
         >
-          <ToastContainer
-            position="bottom-right"
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
           <motion.div variants={modalVariant}>
             <div
               ref={popupRef}

@@ -17,6 +17,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { GiHypersonicBolt } from "react-icons/gi";
 import FetchService from "@services/Fetch.service";
 import cx from "classnames";
+import { toast } from "react-toastify";
 
 const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
   ssr: false,
@@ -106,8 +107,10 @@ const Profile = ({}) => {
         submitData
       );
       console.log(resp);
+      toast.success("Data Saved");
     } catch (error) {
       console.log(error);
+      toast.error("Error");
     }
   };
 

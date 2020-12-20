@@ -3,7 +3,6 @@ import jsQR from "jsqr";
 import Webcam from "react-webcam";
 import Popup from "@components/Popup";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // Icons
 import { RiQrScanFill } from "react-icons/ri";
