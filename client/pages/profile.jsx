@@ -13,12 +13,21 @@ const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
+  const [titlesArray, setTitles] = useState([]);
 
   const toggleModal = () => setShowModal(!showModal);
+  
+  const handleResponse = response => {
+  debugger  
+    if (Array.isArray(response)) {
+      setTitles(response);
+    }
+  };
+
 
   return (
     <>
-      <CameraModal showModal={showModal} toggleModal={toggleModal} />
+      <CameraModal showModal={showModal} toggleModal={toggleModal} detectedTitles={handleResponse}/>
       <div className="w-full h-screen">
         <div className="max-w-4xl pb-32 mx-auto bg-gray-100">
           <div className="relative bg-purple-700  h-36">
@@ -84,10 +93,10 @@ const Profile = () => {
               />
             </div>
           </section>
-          <AddToShelf toggleModal={toggleModal} />
+          <AddToShelf toggleModal={toggleModal} titlesData={titlesArray}/>
           <div className="mt-4">
-            <NewBookBox />
-            <BookBox />
+            {/* <NewBookBox /> */}
+            {/* <BookBox /> */}
           </div>
         </div>
       </div>
