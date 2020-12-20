@@ -1,6 +1,6 @@
-import BookContainer from "@components/BookBox";
-import { useRouter } from "next/router";
-import { FiTwitter } from "react-icons/fi";
+import BookContainer from '@components/BookBox';
+import { useRouter } from 'next/router';
+import { FiTwitter } from 'react-icons/fi';
 
 const UserPage = () => {
   const router = useRouter();
@@ -17,7 +17,9 @@ const UserPage = () => {
         </div>
         <section className="ml-2 mt-8 w-4/5 max-w-5xl">
           <h1 className="font-semibold antialiased font-mono text-4xl text-gray-800 mt-2 ">
-            Book Shelf by {username}
+            Book Shelf by
+            {' '}
+            {username}
           </h1>
           <p className="mt-8 text-gray-900 text-xl tracking-wide">
             Hi, I am Jack, currently a computer science under grad student, I
@@ -29,18 +31,25 @@ const UserPage = () => {
             So, I would really appreciate it if you can gift one for me.
           </p>
           <p className="mt-4 text-2xl font-medium">
-            DM {username} for any of the books below.
+            DM
+            {' '}
+            {username}
+            {' '}
+            for any of the books below.
           </p>
 
           <button
             className="mt-5 transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded-lg outline-none focus:outline-none flex items-center"
             type="button"
-            style={{ backgroundColor: "#1DA1F2" }}
+            style={{ backgroundColor: '#1DA1F2' }}
           >
             <div className="">
               <FiTwitter className="" size="32" />
             </div>
-            <span className="ml-2 ">DM {username}</span>
+            <span className="ml-2 ">
+              DM
+              {username}
+            </span>
           </button>
           <div className="mt-5">
             <BookContainer />
