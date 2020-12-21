@@ -3,15 +3,25 @@ import ProfilePreview from "@components/ProfilePreview";
 import Link from "next/link";
 import { FiTwitter } from "react-icons/fi";
 import getApiUrl from "@utils/getApiUrl";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TokenService from "@services/Token.service";
 import { useRouter } from "next/router";
 import QueryString from "query-string";
+import FetchService from "@services/Fetch.service";
 
 export default function IndexPage() {
   const router = useRouter();
   const tokenService = new TokenService();
+  const [userList, setUserList] = useState([]);
 
+  useEffect(async () => {
+    try {
+      const resp = await FetchService.getData(`/user/list`);
+      setUserList(resp.data.users);
+    } catch ({ error }) {
+      console.log(error);
+    }
+  }, []);
   useEffect(() => {
     const { logout } = QueryString.parse(location.search);
     console.log("logout", logout);
@@ -72,16 +82,14 @@ export default function IndexPage() {
           <h1 className="text-3xl font-semibold text-gray-800">
             Some Books shelf's
           </h1>
-          <div className="mt-2 flex flex-wrap">
+          {/* <div className="mt-2 flex flex-wrap">
             <CityButton city="All" selected />
             <CityButton city="Agra" />
-          </div>
+          </div> */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            <ProfilePreview />
-            <ProfilePreview />
-            <ProfilePreview />
-            <ProfilePreview />
-            <ProfilePreview />
+            {userList.slice(0, 10).map((user, idx) => (
+              <ProfilePreview user={user} key={idx} />
+            ))}
           </div>
         </section>
       </div>

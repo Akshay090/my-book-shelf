@@ -7,14 +7,23 @@ import BookBox from "../components/BookBox";
 import useDebounce from "../hooks/useDebounce";
 import NewBookBox from "@components/NewBookBox";
 
-const AddToShelf = ({ toggleModal, titlesData }) => {
+const AddToShelf = ({ toggleModal, titlesData, userInfo }) => {
   const [searchTerm, setsearchTerm] = useState("");
   const [showLoader, setLoader] = useState(false);
   const [usersBooks, setUsersBooks] = useState([]);
   const [listOfBooks, setListOfBooks] = useState([]);
+  const [bookList, setBookList] = useState([]);
   const [searchBookRes, setSearchBookRes] = useState();
   const debouncedSearch = useDebounce(searchTerm, 500);
 
+  useEffect(() => {
+    console.log(userInfo && userInfo.bookshelf, "dwq");
+    if (userInfo.bookshelf) {
+      console.log(userInfo.bookshelf, "dwq 1");
+      setBookList(userInfo.bookshelf);
+    }
+    // userInfo && userInfo.bookshelf && setBookList(userInfo.bookList);
+  }, [userInfo.bookshelf]);
   const getBookDetails = (titles) => {
     try {
       setLoader(true);
@@ -51,7 +60,9 @@ const AddToShelf = ({ toggleModal, titlesData }) => {
   };
 
   useEffect(() => {
-    getBookDetails(titlesData);
+    if (titlesData) {
+      getBookDetails(titlesData);
+    }
   }, [titlesData]);
 
   useEffect(() => {
@@ -80,10 +91,14 @@ const AddToShelf = ({ toggleModal, titlesData }) => {
     }
   }, [debouncedSearch]);
 
-  const clearSearchData = ()=> {
-    setSearchBookRes()
-    setsearchTerm("")
-  }
+  const clearSearchData = () => {
+    setSearchBookRes();
+    setsearchTerm("");
+  };
+
+  const addToShelf = (newBook) => {
+    setBookList([newBook, ...bookList]);
+  };
   return (
     <section className="mx-2 mt-7 max-w-3xl">
       {showLoader && <Spinner />}
@@ -117,9 +132,21 @@ const AddToShelf = ({ toggleModal, titlesData }) => {
         {searchBookRes && (
           <NewBookBox
             data={searchBookRes}
+            addToShelf={addToShelf}
             clearSearchData={clearSearchData}
           />
         )}
+        {bookList.map(({ title, author, imageUrl, description }, idx) => {
+          return (
+            <BookBox
+              key={idx}
+              title={title}
+              author={author}
+              image={imageUrl}
+              description={description}
+            />
+          );
+        })}
         {listOfBooks
           ? listOfBooks.map((book) => (
               <BookBox

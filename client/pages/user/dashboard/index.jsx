@@ -9,7 +9,6 @@ import NewBookBox from "@components/NewBookBox";
 import Header from "@components/Header";
 import Loading from "@components/Loading";
 import HeaderBtn from "@components/HeaderBtn";
-import { EditorState } from "draft-js";
 import { useRouter } from "next/router";
 import TokenService from "@services/Token.service";
 import QueryString from "query-string";
@@ -18,25 +17,24 @@ import { GiHypersonicBolt } from "react-icons/gi";
 import FetchService from "@services/Fetch.service";
 import cx from "classnames";
 import { toast } from "react-toastify";
-
-const EditorComponent = dynamic(() => import("@components/EditorComponent"), {
-  ssr: false,
-});
+import { convertFromRaw } from "draft-js";
 
 const initialAboutDetails = {
+  profile: "",
   description: "",
   city: "",
   country: "",
 };
 
 const initInputErr = {
+  profile: null,
   city: null,
   country: null,
 };
 
 const Profile = ({}) => {
   const [showModal, setShowModal] = useState(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const tokenService = new TokenService();
   const [aboutDetails, setAboutDetails] = useState(initialAboutDetails);
   const [inputErr, setInputErr] = useState(initInputErr);
@@ -50,20 +48,22 @@ const Profile = ({}) => {
       tokenService.saveData(token);
       const baseURL = location.href.split("?")[0];
       router.push(baseURL, undefined, { shallow: true });
-      setUserInfo(tokenService.userInfo);
+      // setUserInfo(tokenService.userInfo);
     }
     if (tokenService.token) {
+      console.log("token");
       try {
         tokenService.checkToken();
         const { username } = tokenService.userInfo;
         const resp = await FetchService.getData(`/user?user=${username}`);
         console.log(resp, "api res");
-        setUserInfo(resp.data);
-      } catch ({error}) {
+        setUserInfo(resp.data.users);
+        console.log("fdgdfgfdgfdgfhdggdf", resp.data.users);
+      } catch ({ error }) {
         console.log(error);
         if (error === "User Not Found.") {
-          console.log("in here");
-          setUserInfo(tokenService.userInfo);
+          console.log("in here", tokenService.userInfo);
+          setUserInfo({ twitter: tokenService.userInfo });
         } else {
           router.push("/?logout=true");
         }
@@ -74,9 +74,16 @@ const Profile = ({}) => {
   }, []);
 
   useEffect(() => {
-    console.log(editorState, "editorState");
-  }, [editorState]);
-
+    if (userInfo?.profile) {
+      const { profile, description, country, city } = userInfo;
+      setAboutDetails({
+        profile,
+        description,
+        country,
+        city,
+      });
+    }
+  }, [userInfo]);
   const toggleModal = () => setShowModal(!showModal);
 
   const handleChange = (e) => {
@@ -107,12 +114,8 @@ const Profile = ({}) => {
     if (!checkValidInput()) {
       return;
     }
-    const rawEditorData = convertToRaw(editorState.getCurrentContent());
-    console.log(rawEditorData, "raw");
-    const profileData = JSON.stringify(rawEditorData);
     const submitData = {
       ...aboutDetails,
-      profile: profileData,
     };
 
     try {
@@ -133,11 +136,11 @@ const Profile = ({}) => {
       <CameraModal showModal={showModal} toggleModal={toggleModal} />
       <div className="w-full h-screen">
         <div className="max-w-4xl pb-32 mx-auto bg-gray-100">
-          {userInfo ? (
+          {userInfo && userInfo.twitter ? (
             <div>
               <Header
                 bgColor="bg-purple-700"
-                img={`https://unavatar.now.sh/twitter/${userInfo.username}`}
+                img={userInfo.twitter.profilePicture.replace("_normal", "")}
               >
                 <HeaderBtn
                   Icon={IoIosLogOut}
@@ -148,25 +151,35 @@ const Profile = ({}) => {
               </Header>
               <section className="mx-2 mt-8 max-w-3xl">
                 <h1 className="font-semibold antialiased font-mono text-4xl text-gray-800 mt-2 ">
-                  Book Shelf by {userInfo.username}
+                  Book Shelf by {userInfo.twitter.username}
                 </h1>
                 Link to your profile:{" "}
-                <a
-                  className="text-blue-600 underline"
-                  href="bookshelf.club/u/aks2899"
-                >
-                  bookshelf.club/u/aks2899
+                <a className="text-blue-600 underline" href="/u/aks2899">
+                  {`${location?.origin}/u/${userInfo.twitter.username}`}
                 </a>
               </section>
               <section className="mx-2 mt-7 max-w-3xl">
                 <h1 className="font-semibold antialiased font-mono text-3xl underline text-gray-800 mt-2 ">
                   About you
                 </h1>
-                <div className="border-2 border-gray-300 bg-gray-50 mt-4">
-                  <EditorComponent
+                <div className="">
+                  {/* <EditorComponent
                     setEditorState={setEditorState}
                     editorState={editorState}
-                  />
+                  /> */}
+                  <textarea
+                    className={cx({
+                      "w-full mt-4 bg-gray-50 text-gray-900 px-2 py-2 no-outline": true,
+                      "border-4 border-rose-400": inputErr.profile,
+                      "border-2 border-gray-300": !inputErr.profile,
+                    })}
+                    placeholder="A litttle bit of your profile"
+                    name="profile"
+                    value={aboutDetails.profile}
+                    onChange={handleChange}
+                    rows="5"
+                    maxLength="340"
+                  ></textarea>
                 </div>
                 <div className="mt-4">
                   <p>
@@ -176,7 +189,7 @@ const Profile = ({}) => {
                     a small description.(You may be featured on the homepage!)
                   </p>
                   <textarea
-                    className="w-full mt-4 border-2 border-gray-300 bg-gray-50border-gray-200 text-gray-900 px-2 py-2 no-outline"
+                    className="w-full mt-4 border-2 border-gray-300 bg-gray-50 text-gray-900 px-2 py-2 no-outline"
                     placeholder="what do you do, and what you're interested in. Max 140 chars."
                     name="description"
                     value={aboutDetails.description}
@@ -227,11 +240,7 @@ const Profile = ({}) => {
                   </div>
                 </button>
               </section>
-              <AddToShelf toggleModal={toggleModal} />
-              {/* <div className="mt-4">
-                <NewBookBox />
-                <BookBox />
-              </div> */}
+              <AddToShelf toggleModal={toggleModal} userInfo={userInfo} />
             </div>
           ) : (
             <Loading />

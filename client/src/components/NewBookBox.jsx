@@ -3,19 +3,19 @@ import { useState } from "react";
 import { GiBookshelf } from "react-icons/gi";
 import { toast } from "react-toastify";
 
-const NewBookBox = ({ data, clearSearchData }) => {
+const NewBookBox = ({ data, clearSearchData, addToShelf }) => {
   const [description, setDescription] = useState("");
   const handleAddBook = async () => {
     try {
+      const newBook = {
+        ...data,
+        description,
+      };
       const resp = await FetchService.postFormDataAuthed("/user/book/add", {
-        books: [
-          {
-            ...data,
-            description,
-          },
-        ],
+        books: [newBook],
       });
       console.log(resp);
+      addToShelf(newBook);
       clearSearchData();
       toast.success("Data Saved");
     } catch (error) {
