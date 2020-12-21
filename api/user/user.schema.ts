@@ -31,12 +31,8 @@ export type userProfileSetRequest = yup.InferType<
 
 const bookSchema = yup.object({
   title: yup.string().trim().min(1, "title cannot be null").required(),
-  description: yup
-    .string()
-    .trim()
-    .min(1, "description cannot be null")
-    .required(),
-  isbn: yup.string().trim().min(1, "isbn cannot be null").required(),
+  author: yup.string().trim().min(1, "author cannot be null").required(),
+  description: yup.string().trim(),
   imageUrl: yup
     .string()
     .trim()

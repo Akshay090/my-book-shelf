@@ -214,10 +214,10 @@ const Profile = ({}) => {
                 </button>
               </section>
               <AddToShelf toggleModal={toggleModal} />
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <NewBookBox />
                 <BookBox />
-              </div>
+              </div> */}
             </div>
           ) : (
             <Loading />
