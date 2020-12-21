@@ -1,12 +1,12 @@
-import CityButton from '@components/CityButton';
-import ProfilePreview from '@components/ProfilePreview';
-import Link from 'next/link';
-import { FiTwitter } from 'react-icons/fi';
-import getApiUrl from '@utils/getApiUrl';
-import { useEffect } from 'react';
-import TokenService from '@services/Token.service';
-import { useRouter } from 'next/router';
-import QueryString from 'query-string';
+import CityButton from "@components/CityButton";
+import ProfilePreview from "@components/ProfilePreview";
+import Link from "next/link";
+import { FiTwitter } from "react-icons/fi";
+import getApiUrl from "@utils/getApiUrl";
+import { useEffect } from "react";
+import TokenService from "@services/Token.service";
+import { useRouter } from "next/router";
+import QueryString from "query-string";
 
 export default function IndexPage() {
   const router = useRouter();
@@ -14,13 +14,22 @@ export default function IndexPage() {
 
   useEffect(() => {
     const { logout } = QueryString.parse(location.search);
-    console.log('logout', logout);
+    console.log("logout", logout);
     if (logout) {
       tokenService.deleteData();
-      const baseURL = location.href.split('?')[0];
+      const baseURL = location.href.split("?")[0];
       router.push(baseURL, undefined, { shallow: true });
     }
   }, []);
+
+  const handleAuthBtn = () => {
+    if (tokenService.token) {
+      console.log("to dash");
+      router.push("/user/dashboard");
+    } else {
+      router.push(`${getApiUrl()}/auth/generate`);
+    }
+  };
 
   return (
     <div className="w-full bg-gray-100">
@@ -37,8 +46,7 @@ export default function IndexPage() {
             bookshelf.club
           </h1>
           <p className="mt-4">
-            <span className="text-red-500 font-mono">bookshelf.club </span>
-            {' '}
+            <span className="text-red-500 font-mono">bookshelf.club </span>{" "}
             connets you with friends in your city who want to share books with
             others and have fun !!
           </p>
@@ -46,18 +54,18 @@ export default function IndexPage() {
             You would be able to contact them throught their twitter profile.
           </p>
           <div className="mt-4">
-            <Link href={`${getApiUrl()}/auth/generate`}>
+            <div onClick={handleAuthBtn}>
               <button
                 className="transition duration-200 ease-in border-2 hover:shadow-md transform hover:-translate-y-1 text-white active:bg-blue-600 font-semibold px-2 py-3 rounded outline-none focus:outline-none flex items-center"
                 type="button"
-                style={{ backgroundColor: '#1DA1F2' }}
+                style={{ backgroundColor: "#1DA1F2" }}
               >
                 <div className="">
                   <FiTwitter className="" size="32" />
                 </div>
                 <span className="ml-2 ">Get in with Twitter</span>
               </button>
-            </Link>
+            </div>
           </div>
         </section>
         <section className="ml-2 pt-4">

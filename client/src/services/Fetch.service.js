@@ -42,6 +42,21 @@ class FetchService {
         throw errorResp;
       });
   }
+
+  getData(url) {
+    return axios({
+      method: "get",
+      url: `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+    })
+      .then((resp) => {
+        const { data, statusText } = resp;
+        return { data, statusText };
+      })
+      .catch((error) => {
+        const errorResp = error.response.data;
+        throw errorResp;
+      });
+  }
 }
 
 export default new FetchService();

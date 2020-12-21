@@ -43,17 +43,31 @@ const Profile = ({}) => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState();
 
-  useEffect(() => {
+  useEffect(async () => {
     const { token } = QueryString.parse(location.search);
-    console.log("query", token, location.search);
+    console.log("query in effect", location.search);
     if (token) {
       tokenService.saveData(token);
       const baseURL = location.href.split("?")[0];
       router.push(baseURL, undefined, { shallow: true });
       setUserInfo(tokenService.userInfo);
     }
-    if (tokenService.userInfo) {
-      setUserInfo(tokenService.userInfo);
+    if (tokenService.token) {
+      try {
+        tokenService.checkToken();
+        const { username } = tokenService.userInfo;
+        const resp = await FetchService.getData(`/user?user=${username}`);
+        console.log(resp, "api res");
+        setUserInfo(resp.data);
+      } catch ({error}) {
+        console.log(error);
+        if (error === "User Not Found.") {
+          console.log("in here");
+          setUserInfo(tokenService.userInfo);
+        } else {
+          router.push("/?logout=true");
+        }
+      }
     } else {
       router.push("/");
     }
