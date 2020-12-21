@@ -56,13 +56,20 @@ export type addBookRequest = yup.InferType<typeof addBookRequestSchema>;
 
 export const userListRequestSchema = yup
   .object({
-    country: yup.string().trim().min(1, "country cannot br null"),
-    city: yup.string().trim().min(1, "city cannot br null"),
+    country: yup.string().trim().min(1, "country cannot be null"),
+    city: yup.string().trim().min(1, "city cannot be null"),
   })
   .required();
 
 export type userListRequest = yup.InferType<typeof userListRequestSchema>;
 
+export const userRequestSchema = yup
+  .object({
+    user: yup.string().trim().min(1, "user cannot be null").required(),
+  })
+  .required();
+
+export type userRequest = yup.InferType<typeof userRequestSchema>;
 export interface userDBSchema extends userProfileSetRequest {
   twitter: userInfo;
   bookshelf: Array<bookDBSchema>;

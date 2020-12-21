@@ -7,10 +7,12 @@ import {
   addBookRequestSchema,
   userListRequest,
   userListRequestSchema,
+  userRequestSchema,
   userProfileSetRequest,
   userProfileSetRequestSchema,
+  userRequest,
 } from "./user.schema";
-import { setUserProfile, addBook, listUsers } from "./user.service";
+import { setUserProfile, addBook, listUsers, getUserData } from "./user.service";
 import { userInfo } from "../auth/auth.schema";
 
 const router: Router = Router();
@@ -68,6 +70,22 @@ const handleGetUserList = async (
   }
 };
 
+const handleGetUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const query = req.query as userRequest;
+    const users = await getUserData(query);
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 router.post(
   "/user/profile/set",
   validateJwt(true),
@@ -83,9 +101,13 @@ router.post(
 
 router.get(
   "/user/list",
-  validateJwt(true),
   validateQuery("query", userListRequestSchema),
   handleGetUserList
 );
 
+router.get(
+  "/user",
+  validateQuery("query", userRequestSchema),
+  handleGetUser
+);
 export default router;

@@ -8,6 +8,7 @@ import {
   generateJwt,
 } from "./auth.service";
 import { oauthCallback, oauthCallbackSchema } from "./auth.schema";
+import { validateJwt } from "../middlewares/validate-jwt";
 
 const router: Router = Router();
 
@@ -47,6 +48,22 @@ const handleGetCallback = async (
     next(err);
   }
 };
+
+const handleGetCheckToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.status(201).json({
+      success: true,
+      message: "Valid token",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+router.get("/auth/checkToken", validateJwt(), handleGetCheckToken);
 
 router.get("/auth/generate", handleGetGenerate);
 router.get(
