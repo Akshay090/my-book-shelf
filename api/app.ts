@@ -15,7 +15,7 @@ import userRoutes from "./user/user.routes";
 dotenvConfig();
 const app: Express = express();
 
-const whitelist = ["null", `${process.env.HOSTNAME}`];
+const whitelist = ["null", `${process.env.CLIENT_HOSTNAME}`];
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
@@ -45,10 +45,10 @@ app.use("/api/v1", authRoutes);
 app.use("/api/v1", userRoutes);
 
 // if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(join(__dirname + "/../client/out")));
+//   app.use(express.static(join(__dirname, "..", "client", "out")));
 //   app.use("*", (req: Request, res: Response, next: NextFunction) => {
 //     try {
-//       res.render(join(__dirname + "/../client/out/index.html"));
+//       res.render(join(__dirname + "..", "client", "out", "index.html"));
 //     } catch (err) {
 //       next(err);
 //     }

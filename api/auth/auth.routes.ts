@@ -40,7 +40,7 @@ const handleGetCallback = async (
     const tokenParam = Buffer.from(token).toString("base64");
     if (process.env.NODE_ENV === "production")
       res.redirect(
-        `${process.env.API_HOSTNAME}/user/dashboard?token=${tokenParam}`
+        `${process.env.CLIENT_HOSTNAME}/user/dashboard?token=${tokenParam}`
       );
     else
       res.redirect(`http://localhost:3000/user/dashboard?token=${tokenParam}`);
